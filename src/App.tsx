@@ -1,45 +1,21 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React from "react";
+import { connect } from "react-redux";
+import LandingPage from "./pages/landing-page";
+import GamePage from "./pages/game-page";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+function AppDummy({ isGameStarted }: { isGameStarted: boolean }): JSX.Element {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+    <div>
+      {!isGameStarted && <LandingPage />}
+      {isGameStarted && <GamePage />}
     </div>
-  )
+  );
 }
 
-export default App
+const mapStateToProps = (state: { isGameStarted: boolean }) => ({
+  isGameStarted: state.isGameStarted,
+});
+
+const App = connect(mapStateToProps)(AppDummy);
+
+export default App;
