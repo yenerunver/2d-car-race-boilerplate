@@ -1,7 +1,13 @@
-import { GAME_RESET, GAME_STARTED } from "../actions";
+import {
+  GAME_RESET,
+  GAME_STARTED,
+  OPTIONS_CLOSED,
+  OPTIONS_OPENED,
+} from "../actions";
 
 const initialState = {
   isGameStarted: false,
+  areOptionsVisible: false,
 };
 
 const reducer = (state: any, action: { type: string }) => {
@@ -11,6 +17,12 @@ const reducer = (state: any, action: { type: string }) => {
 
     case GAME_STARTED:
       return { ...state, isGameStarted: true };
+
+    case OPTIONS_OPENED:
+      return { ...state, areOptionsVisible: true };
+
+    case OPTIONS_CLOSED:
+      return { ...state, areOptionsVisible: false };
 
     default:
       return state;

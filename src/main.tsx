@@ -8,11 +8,11 @@ import App from "./App";
 import DevTools from "./DevTools";
 
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <Provider store={store}>
       <App />
       <DevTools />
     </Provider>
-  </React.StrictMode>,
+  </React.Fragment>,
   document.getElementById("root")
 );
