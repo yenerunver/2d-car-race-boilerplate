@@ -1,8 +1,12 @@
+import { ICar } from "../@types/ICar";
+
 export const GAME_RESET = "GAME_RESET";
 export const GAME_STARTED = "GAME_STARTED";
 
 export const OPTIONS_OPENED = "OPTIONS_OPENED";
 export const OPTIONS_CLOSED = "OPTIONS_CLOSED";
+
+export const CAR_ADDED = "CAR_ADDED";
 
 export const gameReset = () => ({
   type: GAME_RESET,
@@ -18,4 +22,9 @@ export const optionsOpened = () => ({
 
 export const optionsClosed = () => ({
   type: OPTIONS_CLOSED,
+});
+
+export const carAdded = (car: ICar) => ({
+  type: CAR_ADDED,
+  payload: car,
 });
