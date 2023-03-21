@@ -4,7 +4,7 @@ import { carAdded, gameReset, optionsOpened, trackLoaded } from "../actions";
 import { ICar } from "../@types/ICar";
 import { Car } from "../models/Car";
 import { Background } from "../models/Background";
-import track from "../../assets/tracks/sample/track.json";
+import track from "../../public/assets/tracks/sample/track.json";
 
 interface IGamePage {
   isTrackLoaded: boolean;
@@ -30,7 +30,11 @@ function GamePageDummy({
     canvas.width = track.size.width;
     canvas.height = track.size.height;
 
-    Background.drawBackground(ctx, track.background, onTrackLoad);
+    Background.drawBackground(
+      ctx,
+      `${import.meta.env.BASE_URL || "/"}${track.background}`,
+      onTrackLoad
+    );
   }, [onTrackLoad]);
 
   useEffect(() => {
@@ -41,7 +45,7 @@ function GamePageDummy({
       const carProps = { speed: 0, ...track.startingPoint };
       Car.drawCar(
         ctx,
-        "../../assets/tracks/sample/car.svg",
+        `${import.meta.env.BASE_URL || "/"}${track.car}`,
         carProps,
         addCarOnLoad(carProps)
       );

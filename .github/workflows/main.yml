@@ -4,7 +4,7 @@ on:
     branches:
       - main
 env:
-  BASE_URL: /tv-guide/
+  BASE_URL: /2d-car-race-boilerplate/
 permissions:
   contents: write
 jobs:
@@ -26,5 +26,5 @@ jobs:
           folder: dist
           branch: main
           repository-name: yenerunver/yenerunver.github.io
-          target-folder: tv-guide
+          target-folder: 2d-car-race-boilerplate
           ssh-key: ${{ secrets.GITHUBIO_RSA }}

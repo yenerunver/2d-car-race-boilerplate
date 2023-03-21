@@ -1,6 +1,7 @@
 {
   "name": "Sample",
-  "background": "/assets/tracks/sample/sample.png",
+  "background": "assets/tracks/sample/sample.png",
+  "car": "assets/tracks/sample/car.svg",
   "size": {
     "width": 1300,
     "height": 520
