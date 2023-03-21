@@ -76,6 +76,7 @@ export class Car {
     callback: Function
   ) {
     const TO_RADIANS = Math.PI / 180;
+    const CAR_SIZE = 64;
 
     context.save();
 
@@ -87,11 +88,17 @@ export class Car {
     car.src = asset;
 
     car.onload = () => {
-      context.drawImage(car, -car.width, -car.height);
+      context.drawImage(
+        car,
+        -car.width / 2,
+        -car.height / 2,
+        CAR_SIZE,
+        (CAR_SIZE * car.height) / car.width
+      );
+
+      context.restore();
+
+      callback();
     };
-
-    context.restore();
-
-    callback(carProps);
   }
 }

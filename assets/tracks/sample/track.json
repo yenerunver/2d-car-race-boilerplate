@@ -1,5 +1,13 @@
 {
   "name": "Sample",
-  "track": "./sample.png",
-  "coordinates": "./coordinates"
+  "background": "/assets/tracks/sample/sample.png",
+  "size": {
+    "width": 1300,
+    "height": 520
+  },
+  "startingPoint": {
+    "x": 1100,
+    "y": 400,
+    "angle": 40
+  }
 }

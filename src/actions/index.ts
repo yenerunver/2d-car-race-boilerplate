@@ -6,6 +6,7 @@ export const GAME_STARTED = "GAME_STARTED";
 export const OPTIONS_OPENED = "OPTIONS_OPENED";
 export const OPTIONS_CLOSED = "OPTIONS_CLOSED";
 
+export const TRACK_LOADED = "TRACK_LOADED";
 export const CAR_ADDED = "CAR_ADDED";
 
 export const gameReset = () => ({
@@ -22,6 +23,10 @@ export const optionsOpened = () => ({
 
 export const optionsClosed = () => ({
   type: OPTIONS_CLOSED,
+});
+
+export const trackLoaded = () => ({
+  type: TRACK_LOADED,
 });
 
 export const carAdded = (car: ICar) => ({

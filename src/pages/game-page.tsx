@@ -1,19 +1,24 @@
 import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
-import { carAdded, gameReset, optionsOpened } from "../actions";
+import { carAdded, gameReset, optionsOpened, trackLoaded } from "../actions";
 import { ICar } from "../@types/ICar";
 import { Car } from "../models/Car";
 import { Background } from "../models/Background";
+import track from "../../assets/tracks/sample/track.json";
 
 interface IGamePage {
+  isTrackLoaded: boolean;
   resetGameOnClick: Function;
   optionsOnClick: Function;
+  onTrackLoad: Function;
   addCarOnLoad: Function;
 }
 
 function GamePageDummy({
+  isTrackLoaded,
   resetGameOnClick,
   optionsOnClick,
+  onTrackLoad,
   addCarOnLoad,
 }: IGamePage) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -22,18 +27,26 @@ function GamePageDummy({
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext("2d")!;
 
-    canvas.width = 1300;
-    canvas.height = 520;
+    canvas.width = track.size.width;
+    canvas.height = track.size.height;
 
-    Background.drawBackground(ctx, "../../assets/tracks/sample/sample.png");
+    Background.drawBackground(ctx, track.background, onTrackLoad);
+  }, [onTrackLoad]);
 
-    Car.drawCar(
-      ctx,
-      "../../assets/tracks/sample/car.svg",
-      { x: 50, y: 50, speed: 0, angle: 0 },
-      addCarOnLoad
-    );
-  }, [addCarOnLoad]);
+  useEffect(() => {
+    const canvas = canvasRef.current!;
+    const ctx = canvas.getContext("2d")!;
+
+    if (isTrackLoaded) {
+      const carProps = { speed: 0, ...track.startingPoint };
+      Car.drawCar(
+        ctx,
+        "../../assets/tracks/sample/car.svg",
+        carProps,
+        addCarOnLoad(carProps)
+      );
+    }
+  }, [isTrackLoaded, addCarOnLoad]);
 
   return (
     <section className="pt-24 md:mt-0 md:h-screen flex flex-col justify-center text-center md:text-left md:flex-row md:justify-between md:items-center lg:px-48 md:px-12 px-4 bg-secondary">
@@ -59,13 +72,15 @@ function GamePageDummy({
     </section>
   );
 }
-const mapStateToProps = (state: { cars: [ICar] }) => ({
+const mapStateToProps = (state: { isTrackLoaded: boolean; cars: [ICar] }) => ({
+  isTrackLoaded: state.isTrackLoaded,
   cars: state.cars,
 });
 
 const mapDispatchToProps = {
   resetGameOnClick: gameReset,
   optionsOnClick: optionsOpened,
+  onTrackLoad: trackLoaded,
   addCarOnLoad: carAdded,
 };
 
