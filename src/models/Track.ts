@@ -1,5 +1,5 @@
-import { Track as TrackType } from "../@types/Track";
-import { Canvas } from "./Canvas";
+import { Track as TrackType } from '../@types/Track';
+import { Canvas } from './Canvas';
 
 export class Track {
   object;

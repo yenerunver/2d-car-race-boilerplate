@@ -7,11 +7,11 @@ This is a web-based 2D to-view car racing game boilerplate, built with:
 ## Get Started
 First, install the dependencies:
 ```shell
-npm install
+yarn
 ```
 Then, to run the game on local environment:
 ```shell
-npm run dev
+yarn dev
 ```
 
 ## Copyright

@@ -5,8 +5,8 @@ import {
   OPTIONS_OPENED,
   TRACK_LOADED,
   CAR_ADDED,
-} from "../actions";
-import { Car } from "../models/Car";
+} from '../actions';
+import { Car } from '../models/Car';
 
 export const initialState = {
   isGameStarted: false,

@@ -1,9 +1,9 @@
-import { takeLatest, all, call } from "redux-saga/effects";
-import { GAME_STARTED } from "../actions";
+import { takeLatest, all, call } from 'redux-saga/effects';
+import { GAME_STARTED } from '../actions';
 
 function* gameStartedHandler() {
   // eslint-disable-next-line no-console
-  yield call(console.log, "game started...");
+  yield call(console.log, 'game started...');
 }
 
 function* actionWatcher() {

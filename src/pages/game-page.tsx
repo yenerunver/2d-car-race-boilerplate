@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from "react";
-import { connect } from "react-redux";
-import { carAdded, gameReset, optionsOpened, trackLoaded } from "../actions";
-import { Car as CarType } from "../@types/Car";
-import { Car } from "../models/Car";
-import { Track } from "../models/Track";
-import trackData from "../../public/assets/tracks/sample/track.json";
-import { Canvas } from "../models/Canvas";
-import { CanvasObject } from "../models/CanvasObject";
-import { CanvasObjectPosition } from "../models/CanvasObjectPosition";
+import React, { useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
+import { carAdded, gameReset, optionsOpened, trackLoaded } from '../actions';
+import { Car as CarType } from '../@types/Car';
+import { Car } from '../models/Car';
+import { Track } from '../models/Track';
+import trackData from '../../public/assets/tracks/sample/track.json';
+import { Canvas } from '../models/Canvas';
+import { CanvasObject } from '../models/CanvasObject';
+import { CanvasObjectPosition } from '../models/CanvasObjectPosition';
 
 interface IGamePage {
   isTrackLoaded: boolean;
@@ -17,8 +17,8 @@ interface IGamePage {
   addCarOnLoad: Function;
 }
 
-const TRACK_ASSET = `${import.meta.env.BASE_URL || "/"}${trackData.background}`;
-const CAR_ASSET = `${import.meta.env.BASE_URL || "/"}${trackData.car}`;
+const TRACK_ASSET = `${import.meta.env.BASE_URL || '/'}${trackData.background}`;
+const CAR_ASSET = `${import.meta.env.BASE_URL || '/'}${trackData.car}`;
 
 function GamePageDummy({
   isTrackLoaded,
@@ -40,7 +40,6 @@ function GamePageDummy({
 
     const drawGame = async () => {
       const trackObject = await CanvasObject.createFromAssetURL(TRACK_ASSET);
-      console.log(trackObject.asset);
       const track = new Track({
         object: trackObject,
       });
@@ -48,7 +47,6 @@ function GamePageDummy({
       track.draw(canvas, onTrackLoad);
 
       if (isTrackLoaded) {
-        console.log("isTrackLoaded", isTrackLoaded);
         const carObject = await CanvasObject.createFromAssetURL(CAR_ASSET, 64);
         const carPosition = new CanvasObjectPosition({
           ...trackData.startingPoint,
@@ -92,10 +90,7 @@ function GamePageDummy({
     </section>
   );
 }
-const mapStateToProps = (state: {
-  isTrackLoaded: boolean;
-  cars: [CarType];
-}) => ({
+const mapStateToProps = (state: { isTrackLoaded: boolean; cars: [CarType] }) => ({
   isTrackLoaded: state.isTrackLoaded,
   cars: state.cars,
 });

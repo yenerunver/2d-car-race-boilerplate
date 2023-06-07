@@ -1,13 +1,13 @@
-import { Car as CarType } from "../@types/Car";
+import { Car as CarType } from '../@types/Car';
 
-export const GAME_RESET = "GAME_RESET";
-export const GAME_STARTED = "GAME_STARTED";
+export const GAME_RESET = 'GAME_RESET';
+export const GAME_STARTED = 'GAME_STARTED';
 
-export const OPTIONS_OPENED = "OPTIONS_OPENED";
-export const OPTIONS_CLOSED = "OPTIONS_CLOSED";
+export const OPTIONS_OPENED = 'OPTIONS_OPENED';
+export const OPTIONS_CLOSED = 'OPTIONS_CLOSED';
 
-export const TRACK_LOADED = "TRACK_LOADED";
-export const CAR_ADDED = "CAR_ADDED";
+export const TRACK_LOADED = 'TRACK_LOADED';
+export const CAR_ADDED = 'CAR_ADDED';
 
 export const gameReset = () => ({
   type: GAME_RESET,

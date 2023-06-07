@@ -1,4 +1,4 @@
-import { CanvasObject as CanvasObjectType } from "../@types/CanvasObject";
+import { CanvasObject as CanvasObjectType } from '../@types/CanvasObject';
 
 export class CanvasObject {
   asset;
@@ -12,10 +12,7 @@ export class CanvasObject {
     }
   }
 
-  static createFromAssetURL(
-    assetURL: string,
-    size?: number
-  ): Promise<CanvasObject> {
+  static createFromAssetURL(assetURL: string, size?: number): Promise<CanvasObject> {
     return new Promise((resolve, reject) => {
       const asset = new Image();
       asset.onload = () => resolve(new CanvasObject({ asset, size }));

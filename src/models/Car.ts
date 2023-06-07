@@ -1,5 +1,5 @@
-import { Car as CarType } from "../@types/Car";
-import { Canvas } from "./Canvas";
+import { Car as CarType } from '../@types/Car';
+import { Canvas } from './Canvas';
 
 export class Car {
   object;

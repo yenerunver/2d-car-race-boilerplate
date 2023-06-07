@@ -1,11 +1,23 @@
 {
   "name": "2d-car-race-boilerplate",
-  "version": "0.0.0",
+  "version": "1.0.0-prerelease.0",
   "license": "GPL-3.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "yarn format:eslint && yarn format:prettier",
+    "format:eslint": "eslint --ext \"**/*.{ts,js,mjs,cjs,css}\" . --fix",
+    "format:prettier": "prettier \"**/*.{ts,js,mjs,cjs,css}\" --write --ignore-path .prettierignore",
+    "lint": "yarn lint:eslint && yarn lint:prettier",
+    "lint:eslint": "eslint --ext \"**/*.{ts,js,mjs,cjs,css}\" .",
+    "lint:prettier": "prettier \"**/*.{ts,js,mjs,cjs,css}\" --list-different || (echo '↑↑ these files are not prettier formatted ↑↑' && exit 1)",
+    "pre-release-patch": "standard-version --prerelease prerelease --release-as patch -t \"\"",
+    "pre-release-minor": "standard-version --prerelease prerelease --release-as minor -t \"\"",
+    "pre-release-major": "standard-version --prerelease prerelease --release-as major -t \"\"",
+    "release-patch": "standard-version --release-as patch -t \"\"",
+    "release-minor": "standard-version --release-as minor -t \"\"",
+    "release-major": "standard-version --release-as major -t \"\""
   },
   "dependencies": {
     "@redux-devtools/core": "^3.11.0",
@@ -24,6 +36,8 @@
     "vite": "^4.2.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.6.5",
+    "@commitlint/config-conventional": "^17.6.5",
     "@types/babel__core": "^7.20.0",
     "@types/node": "^18.15.5",
     "@types/react": "^17.0.33",
@@ -40,9 +54,26 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "husky": "^8.0.3",
     "postcss": "^8.4.20",
     "prettier": "^2.5.1",
+    "standard-version": "^9.5.0",
     "tailwindcss": "^3.2.4",
     "typescript": "^4.5.5"
+  },
+  "resolutions": {
+    "@types/react": "^17.0.33"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn format",
+      "commit-msg": "commitlint --edit \"$1\""
+    }
+  },
+  "standard-version": {
+    "skip": {
+      "commit": true,
+      "tag": true
+    }
   }
 }

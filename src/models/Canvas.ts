@@ -1,6 +1,6 @@
-import { Canvas as CanvasType } from "../@types/Canvas";
-import { CanvasObject as CanvasObjectType } from "../@types/CanvasObject";
-import { CanvasObjectPosition } from "./CanvasObjectPosition";
+import { Canvas as CanvasType } from '../@types/Canvas';
+import { CanvasObject as CanvasObjectType } from '../@types/CanvasObject';
+import { CanvasObjectPosition } from './CanvasObjectPosition';
 
 export class Canvas {
   canvas;
@@ -12,20 +12,16 @@ export class Canvas {
   }
 
   drawBackground(object: CanvasObjectType, callback: Function) {
-    const context = this.canvas.getContext("2d")!;
+    const context = this.canvas.getContext('2d')!;
 
     context.drawImage(object.asset, 0, 0);
 
     callback();
   }
 
-  drawObject(
-    object: CanvasObjectType,
-    position: CanvasObjectPosition,
-    callback: Function
-  ) {
+  drawObject(object: CanvasObjectType, position: CanvasObjectPosition, callback: Function) {
     const TO_RADIANS = Math.PI / 180;
-    const context = this.canvas.getContext("2d")!;
+    const context = this.canvas.getContext('2d')!;
 
     context.save();
 

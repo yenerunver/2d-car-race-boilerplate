@@ -1,4 +1,4 @@
-import { CanvasObjectPosition as CanvasObjectPositionType } from "../@types/CanvasObjectPosition";
+import { CanvasObjectPosition as CanvasObjectPositionType } from '../@types/CanvasObjectPosition';
 
 export class CanvasObjectPosition {
   x;
