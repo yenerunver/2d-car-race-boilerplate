@@ -1,4 +1,4 @@
-import { ICar } from "../@types/ICar";
+import { Car as CarType } from "../@types/Car";
 
 export const GAME_RESET = "GAME_RESET";
 export const GAME_STARTED = "GAME_STARTED";
@@ -29,7 +29,7 @@ export const trackLoaded = () => ({
   type: TRACK_LOADED,
 });
 
-export const carAdded = (car: ICar) => ({
+export const carAdded = (car: CarType) => ({
   type: CAR_ADDED,
   payload: car,
 });

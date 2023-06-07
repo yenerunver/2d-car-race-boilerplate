@@ -1,6 +1,5 @@
-export interface ICar {
+export interface CanvasObjectPosition {
   x: number;
   y: number;
-  speed: number;
   angle: number;
 }

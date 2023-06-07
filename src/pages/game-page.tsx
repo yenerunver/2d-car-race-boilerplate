@@ -1,10 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { carAdded, gameReset, optionsOpened, trackLoaded } from "../actions";
-import { ICar } from "../@types/ICar";
+import { Car as CarType } from "../@types/Car";
 import { Car } from "../models/Car";
-import { Background } from "../models/Background";
-import track from "../../public/assets/tracks/sample/track.json";
+import { Track } from "../models/Track";
+import trackData from "../../public/assets/tracks/sample/track.json";
+import { Canvas } from "../models/Canvas";
+import { CanvasObject } from "../models/CanvasObject";
+import { CanvasObjectPosition } from "../models/CanvasObjectPosition";
 
 interface IGamePage {
   isTrackLoaded: boolean;
@@ -13,6 +16,9 @@ interface IGamePage {
   onTrackLoad: Function;
   addCarOnLoad: Function;
 }
+
+const TRACK_ASSET = `${import.meta.env.BASE_URL || "/"}${trackData.background}`;
+const CAR_ASSET = `${import.meta.env.BASE_URL || "/"}${trackData.car}`;
 
 function GamePageDummy({
   isTrackLoaded,
@@ -24,33 +30,43 @@ function GamePageDummy({
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext("2d")!;
+    const canvasElement = canvasRef.current!;
 
-    canvas.width = track.size.width;
-    canvas.height = track.size.height;
+    const canvas = new Canvas({
+      canvas: canvasElement,
+      width: trackData.size.width,
+      height: trackData.size.height,
+    });
 
-    Background.drawBackground(
-      ctx,
-      `${import.meta.env.BASE_URL || "/"}${track.background}`,
-      onTrackLoad
-    );
-  }, [onTrackLoad]);
+    const drawGame = async () => {
+      const trackObject = await CanvasObject.createFromAssetURL(TRACK_ASSET);
+      console.log(trackObject.asset);
+      const track = new Track({
+        object: trackObject,
+      });
 
-  useEffect(() => {
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext("2d")!;
+      track.draw(canvas, onTrackLoad);
 
-    if (isTrackLoaded) {
-      const carProps = { speed: 0, ...track.startingPoint };
-      Car.drawCar(
-        ctx,
-        `${import.meta.env.BASE_URL || "/"}${track.car}`,
-        carProps,
-        addCarOnLoad(carProps)
-      );
-    }
-  }, [isTrackLoaded, addCarOnLoad]);
+      if (isTrackLoaded) {
+        console.log("isTrackLoaded", isTrackLoaded);
+        const carObject = await CanvasObject.createFromAssetURL(CAR_ASSET, 64);
+        const carPosition = new CanvasObjectPosition({
+          ...trackData.startingPoint,
+        });
+        const car = new Car({
+          object: carObject,
+          position: carPosition,
+        });
+
+        const carLoadCallback = () => addCarOnLoad(car);
+
+        car.draw(canvas, carLoadCallback);
+      }
+    };
+
+    // noinspection JSIgnoredPromiseFromCall
+    drawGame();
+  }, [addCarOnLoad, isTrackLoaded, onTrackLoad]);
 
   return (
     <section className="pt-24 md:mt-0 md:h-screen flex flex-col justify-center text-center md:text-left md:flex-row md:justify-between md:items-center lg:px-48 md:px-12 px-4 bg-secondary">
@@ -76,7 +92,10 @@ function GamePageDummy({
     </section>
   );
 }
-const mapStateToProps = (state: { isTrackLoaded: boolean; cars: [ICar] }) => ({
+const mapStateToProps = (state: {
+  isTrackLoaded: boolean;
+  cars: [CarType];
+}) => ({
   isTrackLoaded: state.isTrackLoaded,
   cars: state.cars,
 });
