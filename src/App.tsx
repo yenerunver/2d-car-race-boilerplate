@@ -1,8 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
-import LandingPage from "./pages/landing-page";
-import GamePage from "./pages/game-page";
-import OptionsPage from "./pages/options-page";
+import React from 'react';
+import { connect } from 'react-redux';
+import LandingPage from './pages/landing-page';
+import GamePage from './pages/game-page';
+import OptionsPage from './pages/options-page';
 
 function AppDummy({
   isGameStarted,
@@ -10,7 +10,7 @@ function AppDummy({
 }: {
   isGameStarted: boolean;
   areOptionsVisible: boolean;
-}): JSX.Element {
+}) {
   return (
     <div>
       {!isGameStarted && <LandingPage />}
@@ -20,10 +20,7 @@ function AppDummy({
   );
 }
 
-const mapStateToProps = (state: {
-  isGameStarted: boolean;
-  areOptionsVisible: boolean;
-}) => ({
+const mapStateToProps = (state: { isGameStarted: boolean; areOptionsVisible: boolean }) => ({
   isGameStarted: state.isGameStarted,
   areOptionsVisible: state.areOptionsVisible,
 });

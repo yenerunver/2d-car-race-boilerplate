@@ -1,4 +1,4 @@
-import { takeLatest, all, call } from 'redux-saga/effects';
+import { all, call, takeLatest } from 'redux-saga/effects';
 import { GAME_STARTED } from '../actions';
 
 function* gameStartedHandler() {

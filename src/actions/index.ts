@@ -1,3 +1,4 @@
+import { Track as TrackType } from '../@types/Track';
 import { Car as CarType } from '../@types/Car';
 
 export const GAME_RESET = 'GAME_RESET';
@@ -25,8 +26,9 @@ export const optionsClosed = () => ({
   type: OPTIONS_CLOSED,
 });
 
-export const trackLoaded = () => ({
+export const trackLoaded = (track: TrackType) => ({
   type: TRACK_LOADED,
+  payload: track,
 });
 
 export const carAdded = (car: CarType) => ({
