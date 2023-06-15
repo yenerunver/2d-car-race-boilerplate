@@ -11,15 +11,26 @@ export class Canvas {
     this.canvas.height = props.height;
   }
 
-  drawBackground(object: CanvasObjectType, callback: Function) {
+  clear() {
+    const context = this.canvas.getContext('2d')!;
+
+    context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  drawBackground(object: CanvasObjectType, callback: Function = () => {}, ...callbackParams: any) {
     const context = this.canvas.getContext('2d')!;
 
     context.drawImage(object.asset, 0, 0);
 
-    callback();
+    callback(...callbackParams);
   }
 
-  drawObject(object: CanvasObjectType, position: CanvasObjectPosition, callback: Function) {
+  drawObject(
+    object: CanvasObjectType,
+    position: CanvasObjectPosition,
+    callback: Function = () => {},
+    ...callbackParams: any
+  ) {
     const TO_RADIANS = Math.PI / 180;
     const context = this.canvas.getContext('2d')!;
 
@@ -39,6 +50,6 @@ export class Canvas {
 
     context.restore();
 
-    callback();
+    callback(...callbackParams);
   }
 }

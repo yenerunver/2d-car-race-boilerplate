@@ -9,6 +9,6 @@ export class Track {
   }
 
   draw(canvas: Canvas, callback: Function) {
-    canvas.drawBackground(this.object, callback);
+    canvas.drawBackground(this.object, callback, this);
   }
 }
