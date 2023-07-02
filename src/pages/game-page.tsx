@@ -39,6 +39,7 @@ function GamePageDummy({
 }: GamePageType) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  // Load canvas
   useEffect(() => {
     const canvasElement = canvasRef.current!;
 
@@ -55,6 +56,7 @@ function GamePageDummy({
     );
   }, [canvas, onCanvasLoad]);
 
+  // Load track
   useEffect(() => {
     if (!canvas) return;
 
@@ -72,6 +74,7 @@ function GamePageDummy({
     initializeTrack();
   }, [canvas, onTrackLoad, track]);
 
+  // Load car
   useEffect(() => {
     if (!canvas) return;
 
@@ -102,6 +105,7 @@ function GamePageDummy({
     onKeyUp(event.code);
   };
 
+  // Car position updates
   useEffect(() => {
     if (cars.length === 0) return;
 
@@ -128,8 +132,8 @@ function GamePageDummy({
       });
     }
 
-    car.moveCar(onCarMove);
-  }, [cars, keysPressed, onCarMove]);
+    car.moveCar(canvas, onCarMove);
+  }, [canvas, cars, keysPressed, onCarMove]);
 
   const [timerStarted, setTimerStarted] = useState(false);
   // eslint-disable-next-line no-undef
@@ -144,6 +148,7 @@ function GamePageDummy({
     setTimerLoop(loop);
   }
 
+  // Frame updates
   const reDraw = () => {
     if (cars.length === 0) return;
 

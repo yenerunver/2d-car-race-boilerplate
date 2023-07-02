@@ -1,6 +1,7 @@
 import { Car as CarType } from '../@types/Car';
 import { Canvas } from './Canvas';
 import { CanvasObjectPosition } from './CanvasObjectPosition';
+import { Track } from './Track';
 
 export class Car {
   id;
@@ -72,13 +73,25 @@ export class Car {
     canvas.drawObject(this.object, this.position, callback, this);
   }
 
-  moveCar(callback: Function) {
+  moveCar(canvas: Canvas, callback: Function) {
     if (this.speed === 0) {
       return;
     }
 
-    const newX = this.position.x + Math.sin((this.position.angle * Math.PI) / 180) * this.speed;
-    const newY = this.position.y - Math.cos((this.position.angle * Math.PI) / 180) * this.speed;
+    let newX = this.position.x + Math.sin((this.position.angle * Math.PI) / 180) * this.speed;
+    let newY = this.position.y - Math.cos((this.position.angle * Math.PI) / 180) * this.speed;
+
+    if (newX > canvas.canvas.width) {
+      newX = canvas.canvas.width;
+    } else if (newX < 0) {
+      newX = 0;
+    }
+
+    if (newY > canvas.canvas.height) {
+      newY = canvas.canvas.height;
+    } else if (newY < 0) {
+      newY = 0;
+    }
 
     this.position = new CanvasObjectPosition({
       x: newX,

@@ -42,8 +42,8 @@ export class Canvas {
 
     context.drawImage(
       object.asset,
-      -object.asset.width / 2,
-      -object.asset.height / 2,
+      -object.asset.width / 4,
+      -object.asset.height / 4,
       object.size!,
       (object.size! * object.asset.height) / object.asset.width
     );
