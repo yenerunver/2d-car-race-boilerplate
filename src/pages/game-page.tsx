@@ -93,8 +93,14 @@ function GamePageDummy({
     initializeCar();
   }, [onCarLoad, canvas, cars.length, onTrackLoad, track]);
 
-  document.onkeydown = event => onKeyDown(event.code);
-  document.onkeyup = event => onKeyUp(event.code);
+  document.onkeydown = event => {
+    event.preventDefault();
+    onKeyDown(event.code);
+  };
+  document.onkeyup = event => {
+    event.preventDefault();
+    onKeyUp(event.code);
+  };
 
   useEffect(() => {
     if (cars.length === 0) return;
