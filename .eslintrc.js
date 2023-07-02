@@ -4,6 +4,7 @@ module.exports = {
     browser: true,
     node: true,
   },
+  ignorePatterns: ['dist/*'],
   extends: ['airbnb', 'prettier'],
   parser: '@typescript-eslint/parser',
   plugins: ['import', 'prettier', 'react-hooks'],

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import {
   canvasLoaded,
@@ -89,31 +89,26 @@ function GamePageDummy({
     if (!track || cars.length > 0) return;
 
     initializeCar();
-  }, [onCarLoad, canvas, cars, onTrackLoad, track]);
+  }, [onCarLoad, canvas, cars.length, onTrackLoad, track]);
 
   document.onkeydown = event => onKeyDown(event.code);
   document.onkeyup = event => onKeyUp(event.code);
-  console.log('keysPressed', keysPressed);
+
+  const FPS = 60;
 
   useEffect(() => {
     if (cars.length === 0) return;
 
     const car = cars[0];
 
-    if (!car.isMoving()) {
-      car.speed = 0;
-    } else {
-      car.speed *= car.speedDecay;
-    }
-
     if (keysPressed.length > 0) {
       keysPressed.forEach(keyCode => {
         switch (keyCode) {
           case 'ArrowUp':
-            car.accelerate();
+            car.accelerate(FPS);
             break;
           case 'ArrowDown':
-            car.decelerate();
+            car.decelerate(FPS);
             break;
           case 'ArrowLeft':
             car.steerLeft();
@@ -130,16 +125,28 @@ function GamePageDummy({
     car.moveCar(onCarMove);
   }, [cars, keysPressed, onCarMove]);
 
-  useEffect(() => {
+  const [timerStarted, setTimerStarted] = useState(false);
+  // eslint-disable-next-line no-undef
+  const [timerLoop, setTimerLoop] = useState(0);
+
+  if (!timerStarted && cars.length > 0) {
+    setTimerStarted(true);
+
+    const loop = window.setInterval(() => {
+      reDraw();
+    }, 1000 / FPS);
+    setTimerLoop(loop);
+  }
+
+  const reDraw = () => {
     if (cars.length === 0) return;
 
     canvas.clear();
 
     track.draw(canvas, () => {});
-
     const car = cars[0];
     car.draw(canvas, () => {});
-  }, [canvas, cars, track]);
+  };
 
   return (
     <section className="pt-24 md:mt-0 md:h-screen flex flex-col justify-center text-center md:text-left md:flex-row md:justify-between md:items-center lg:px-48 md:px-12 px-4 bg-secondary">
@@ -148,7 +155,10 @@ function GamePageDummy({
           <button
             type="button"
             className="bg-black px-6 py-4 rounded-lg border-2 border-black border-solid text-white mr-2 mb-2"
-            onClick={() => resetGameOnClick()}
+            onClick={() => {
+              window.clearInterval(timerLoop);
+              resetGameOnClick();
+            }}
           >
             Reset Game
           </button>

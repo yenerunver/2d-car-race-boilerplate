@@ -1,0 +1,5 @@
+dist/*
+.eslintrc.js
+.prettierrc.js
+commitlint.config.js
+postcss.config.js
