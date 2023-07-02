@@ -7,10 +7,12 @@ import store from './store';
 import App from './App';
 import DevTools from './DevTools';
 
+const isDevToolsEnabled = import.meta.env.VITE_DEV_TOOLS === 'true';
+
 ReactDOM.render(
   <Provider store={store}>
     <App />
-    <DevTools />
+    {isDevToolsEnabled && <DevTools />}
   </Provider>,
   document.getElementById('root')
 );

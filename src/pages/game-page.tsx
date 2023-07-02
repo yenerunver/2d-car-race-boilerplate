@@ -21,6 +21,8 @@ import { CanvasObjectPosition } from '../models/CanvasObjectPosition';
 const TRACK_ASSET = new URL(`/src/${trackData.background}`, import.meta.url).href;
 const CAR_ASSET = new URL(`/src/${trackData.car}`, import.meta.url).href;
 
+const FPS = Number(import.meta.env.VITE_FPS);
+
 function GamePageDummy({
   canvas,
   track,
@@ -74,7 +76,7 @@ function GamePageDummy({
     if (!canvas) return;
 
     const initializeCar = async () => {
-      const carObject = await CanvasObject.createFromAssetURL(CAR_ASSET, 64);
+      const carObject = await CanvasObject.createFromAssetURL(CAR_ASSET, 28);
       const carPosition = new CanvasObjectPosition({
         ...trackData.startingPoint,
       });
@@ -93,8 +95,6 @@ function GamePageDummy({
 
   document.onkeydown = event => onKeyDown(event.code);
   document.onkeyup = event => onKeyUp(event.code);
-
-  const FPS = 60;
 
   useEffect(() => {
     if (cars.length === 0) return;

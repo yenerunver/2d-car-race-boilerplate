@@ -11,11 +11,11 @@ export class Car {
 
   speed = 0;
 
-  maxSpeed = 4;
+  maxSpeed = 0.1;
 
-  backSpeed = -2;
+  maxBackSpeed = 0.05;
 
-  angleStep = 4;
+  angleStep = 0.05;
 
   constructor(props: CarType) {
     this.id = Number(Math.random().toFixed(2)) * 100;
@@ -46,7 +46,7 @@ export class Car {
       return;
     }
 
-    this.speed = this.backSpeed;
+    this.speed = this.maxBackSpeed * -1;
     setTimeout(() => {
       this.speed = 0;
     }, FPS);
@@ -77,12 +77,8 @@ export class Car {
       return;
     }
 
-    const newX =
-      this.position.x +
-      Math.sin((this.position.angle * Math.PI) / 180) * (this.speed / this.maxSpeed);
-    const newY =
-      this.position.y -
-      Math.cos((this.position.angle * Math.PI) / 180) * (this.speed / this.maxSpeed);
+    const newX = this.position.x + Math.sin((this.position.angle * Math.PI) / 180) * this.speed;
+    const newY = this.position.y - Math.cos((this.position.angle * Math.PI) / 180) * this.speed;
 
     this.position = new CanvasObjectPosition({
       x: newX,
