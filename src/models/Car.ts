@@ -73,13 +73,22 @@ export class Car {
     canvas.drawObject(this.object, this.position, callback, this);
   }
 
-  moveCar(canvas: Canvas, callback: Function) {
+  moveCar(canvas: Canvas, track: Track, callback: Function) {
     if (this.speed === 0) {
       return;
     }
 
-    let newX = this.position.x + Math.sin((this.position.angle * Math.PI) / 180) * this.speed;
-    let newY = this.position.y - Math.cos((this.position.angle * Math.PI) / 180) * this.speed;
+    let speedMultiplier = 1;
+    if (!track.isPointInsideRoadMap(this.position)) {
+      speedMultiplier = 0.5;
+    }
+
+    let newX =
+      this.position.x +
+      Math.sin((this.position.angle * Math.PI) / 180) * this.speed * speedMultiplier;
+    let newY =
+      this.position.y -
+      Math.cos((this.position.angle * Math.PI) / 180) * this.speed * speedMultiplier;
 
     if (newX > canvas.canvas.width) {
       newX = canvas.canvas.width;

@@ -64,6 +64,7 @@ function GamePageDummy({
       const trackObject = await CanvasObject.createFromAssetURL(TRACK_ASSET);
       const trackToLoad = new Track({
         object: trackObject,
+        roadPolygon: trackData.roadPolygon,
       });
 
       trackToLoad.draw(canvas, onTrackLoad);
@@ -132,8 +133,8 @@ function GamePageDummy({
       });
     }
 
-    car.moveCar(canvas, onCarMove);
-  }, [canvas, cars, keysPressed, onCarMove]);
+    car.moveCar(canvas, track, onCarMove);
+  }, [canvas, cars, keysPressed, onCarMove, track]);
 
   const [timerStarted, setTimerStarted] = useState(false);
   // eslint-disable-next-line no-undef
