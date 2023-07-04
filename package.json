@@ -1,6 +1,6 @@
 {
   "name": "2d-car-race-boilerplate",
-  "version": "1.0.0-prerelease.2",
+  "version": "1.0.0",
   "license": "GPL-3.0",
   "scripts": {
     "dev": "vite",

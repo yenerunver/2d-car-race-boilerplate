@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.0.0 (2023-07-04)
+
+c516c16 build: add controls
+c9297a0 build: add road maps and make it slower outside
+020529d build: track limits
+
+### Bug Fixes
+
+* scrolling on page with keyboard inputs ([6972c7e](https://github.com/yenerunver/2d-car-race-boilerplate/commit/6972c7e5a4b1b8921373a852acaf4d9e53d1ed23))
+
 ## 1.0.0-prerelease.2 (2023-07-02)
 
 e008967 build: add environment variables
