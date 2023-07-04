@@ -182,6 +182,86 @@ function GamePageDummy({
             Options
           </button>
         </div>
+        <div className="mt-6 mb-6 overflow-x-auto">
+          <table className="w-full table-auto">
+            <thead className="">
+              <tr className="text-sm font-semibold text-center border-b-2 border-blue-500 uppercase">
+                <th className="px-4 py-3">Action</th>
+                <th className="px-4 py-3">Key</th>
+              </tr>
+            </thead>
+            <tbody className="text-sm font-normal text-gray-700 text-center">
+              <tr className="py-10 bg-gray-100 hover:bg-gray-200 font-medium">
+                <td className="px-4 py-4">Accelerate</td>
+                <td className="px-4 py-4">
+                  <kbd className="inline-flex items-center mr-1 px-2 py-1.5 text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">
+                    <svg
+                      className="w-2.5 h-2.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 16 10"
+                    >
+                      <path d="M9.207 1A2 2 0 0 0 6.38 1L.793 6.586A2 2 0 0 0 2.207 10H13.38a2 2 0 0 0 1.414-3.414L9.207 1Z" />
+                    </svg>
+                    <span className="sr-only">Arrow key up</span>
+                  </kbd>
+                </td>
+              </tr>
+              <tr className="py-10 bg-gray-100 hover:bg-gray-200 font-medium">
+                <td className="px-4 py-4">Reverse</td>
+                <td className="px-4 py-4">
+                  <kbd className="inline-flex items-center px-2 py-1.5 text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">
+                    <svg
+                      className="w-2.5 h-2.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 16 10"
+                    >
+                      <path d="M15.434 1.235A2 2 0 0 0 13.586 0H2.414A2 2 0 0 0 1 3.414L6.586 9a2 2 0 0 0 2.828 0L15 3.414a2 2 0 0 0 .434-2.179Z" />
+                    </svg>
+                    <span className="sr-only">Arrow key down</span>
+                  </kbd>
+                </td>
+              </tr>
+              <tr className="py-10 bg-gray-100 hover:bg-gray-200 font-medium">
+                <td className="px-4 py-4">Steer Left</td>
+                <td className="px-4 py-4">
+                  <kbd className="inline-flex items-center mr-1 px-2 py-1.5 text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">
+                    <svg
+                      className="w-2.5 h-2.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 10 16"
+                    >
+                      <path d="M8.766.566A2 2 0 0 0 6.586 1L1 6.586a2 2 0 0 0 0 2.828L6.586 15A2 2 0 0 0 10 13.586V2.414A2 2 0 0 0 8.766.566Z" />
+                    </svg>
+                    <span className="sr-only">Arrow key left</span>
+                  </kbd>
+                </td>
+              </tr>
+              <tr className="py-10 bg-gray-100 hover:bg-gray-200 font-medium">
+                <td className="px-4 py-4">Steer Right</td>
+                <td className="px-4 py-4">
+                  <kbd className="inline-flex items-center px-2 py-1.5 text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">
+                    <svg
+                      className="w-2.5 h-2.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 10 16"
+                    >
+                      <path d="M3.414 1A2 2 0 0 0 0 2.414v11.172A2 2 0 0 0 3.414 15L9 9.414a2 2 0 0 0 0-2.828L3.414 1Z" />
+                    </svg>
+                    <span className="sr-only">Arrow key right</span>
+                  </kbd>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <canvas ref={canvasRef} />
       </div>
     </section>
