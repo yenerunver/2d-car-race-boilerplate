@@ -5,6 +5,7 @@ import {
   GAME_STARTED,
   OPTIONS_CLOSED,
   OPTIONS_OPENED,
+  OPTIONS_SAVED,
   CANVAS_LOADED,
   TRACK_LOADED,
   KEY_PRESSED,
@@ -31,6 +32,7 @@ const reducer = (state: any, action: { type: string; payload: any }) => {
       return { ...state, areOptionsVisible: true };
 
     case OPTIONS_CLOSED:
+    case OPTIONS_SAVED:
       return { ...state, areOptionsVisible: false };
 
     case CANVAS_LOADED:

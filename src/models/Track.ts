@@ -15,19 +15,19 @@ export class Track {
   constructor(props: TrackType) {
     this.object = props.object;
     this.roadPolygon = props.roadPolygon;
-    this.roadMap = this.polygonToMap(this.roadPolygon);
+    this.roadMap = this.polygonToMap(this.roadPolygon, props.screenMultiplier);
   }
 
   draw(canvas: Canvas, callback: Function) {
     canvas.drawBackground(this.object, callback, this);
   }
 
-  public polygonToMap = (polygon: string) => {
+  public polygonToMap = (polygon: string, screenMultiplier: number) => {
     const map: [[number, number] | []] = [[]];
 
     polygon
       .split(',')
-      .map(parseFloat)
+      .map(position => parseFloat(position) * screenMultiplier)
       .forEach((point, index) => {
         if (index % 2 === 0) {
           map[Math.floor(index / 2)] = [];

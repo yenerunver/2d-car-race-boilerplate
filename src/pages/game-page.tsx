@@ -39,6 +39,18 @@ function GamePageDummy({
 }: GamePageType) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  // Device screen compatibility
+  const dimensions = {
+    height: window.innerHeight,
+    width: window.innerWidth > 1024 ? window.innerWidth - 48 - 18 : window.innerWidth,
+  };
+
+  const screenMultiplierFromWindow = Math.min(
+    dimensions.width / trackData.size.width,
+    dimensions.height / trackData.size.height
+  );
+  const screenMultiplier = Math.min(screenMultiplierFromWindow, 1);
+
   // Load canvas
   useEffect(() => {
     const canvasElement = canvasRef.current!;
@@ -50,11 +62,12 @@ function GamePageDummy({
     onCanvasLoad(
       new Canvas({
         canvas: canvasElement,
-        width: trackData.size.width,
-        height: trackData.size.height,
+        width: screenMultiplier * trackData.size.width,
+        height: screenMultiplier * trackData.size.height,
+        screenMultiplier,
       })
     );
-  }, [canvas, onCanvasLoad]);
+  }, [canvas, onCanvasLoad, screenMultiplier]);
 
   // Load track
   useEffect(() => {
@@ -65,6 +78,7 @@ function GamePageDummy({
       const trackToLoad = new Track({
         object: trackObject,
         roadPolygon: trackData.roadPolygon,
+        screenMultiplier,
       });
 
       trackToLoad.draw(canvas, onTrackLoad);
@@ -73,16 +87,18 @@ function GamePageDummy({
     if (track) return;
 
     initializeTrack();
-  }, [canvas, onTrackLoad, track]);
+  }, [canvas, onTrackLoad, screenMultiplier, track]);
 
   // Load car
   useEffect(() => {
     if (!canvas) return;
 
     const initializeCar = async () => {
-      const carObject = await CanvasObject.createFromAssetURL(CAR_ASSET, 28);
+      const carObject = await CanvasObject.createFromAssetURL(CAR_ASSET);
       const carPosition = new CanvasObjectPosition({
-        ...trackData.startingPoint,
+        x: trackData.startingPoint.x * screenMultiplier,
+        y: trackData.startingPoint.y * screenMultiplier,
+        angle: trackData.startingPoint.angle,
       });
       const car = new Car({
         object: carObject,
@@ -95,7 +111,7 @@ function GamePageDummy({
     if (!track || cars.length > 0) return;
 
     initializeCar();
-  }, [onCarLoad, canvas, cars.length, onTrackLoad, track]);
+  }, [onCarLoad, canvas, cars.length, onTrackLoad, track, screenMultiplier]);
 
   document.onkeydown = event => {
     event.preventDefault();
@@ -122,10 +138,10 @@ function GamePageDummy({
             car.decelerate(FPS);
             break;
           case 'ArrowLeft':
-            car.steerLeft();
+            car.steerLeft(screenMultiplier);
             break;
           case 'ArrowRight':
-            car.steerRight();
+            car.steerRight(screenMultiplier);
             break;
           default:
             break;
@@ -134,7 +150,7 @@ function GamePageDummy({
     }
 
     car.moveCar(canvas, track, onCarMove);
-  }, [canvas, cars, keysPressed, onCarMove, track]);
+  }, [canvas, cars, keysPressed, onCarMove, screenMultiplier, track]);
 
   const [timerStarted, setTimerStarted] = useState(false);
   // eslint-disable-next-line no-undef
@@ -161,12 +177,13 @@ function GamePageDummy({
   };
 
   return (
-    <section className="pt-24 md:mt-0 md:h-screen flex flex-col justify-center text-center md:text-left md:flex-row md:justify-between md:items-center lg:px-48 md:px-12 px-4 bg-secondary">
-      <div className="relative">
-        <div className="font-montserrat">
+    <section className="background-radial-gradient text-white lg:mb-40">
+      <p className="landscape:hidden">Please rotate your screen to Landscape mode!</p>
+      <div className="lg:py-12 text-center lg:px-12 lg:text-left portrait:hidden">
+        <div className="font-montserrat hidden lg:block">
           <button
             type="button"
-            className="bg-black px-6 py-4 rounded-lg border-2 border-black border-solid text-white mr-2 mb-2"
+            className="mb-2 inline-block rounded bg-neutral-50 px-12 pt-4 pb-3.5 text-sm font-medium uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_#cbcbcb] transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] md:mr-2 md:mb-0"
             onClick={() => {
               window.clearInterval(timerLoop);
               resetGameOnClick();
@@ -176,93 +193,179 @@ function GamePageDummy({
           </button>
           <button
             type="button"
-            className="px-6 py-4 border-2 border-black border-solid rounded-lg"
+            className="inline-block rounded px-12 pt-4 pb-3.5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-200"
             onClick={() => optionsOnClick()}
           >
             Options
           </button>
         </div>
-        <div className="mt-6 mb-6 overflow-x-auto">
-          <table className="w-full table-auto">
-            <thead className="">
-              <tr className="text-sm font-semibold text-center border-b-2 border-blue-500 uppercase">
-                <th className="px-4 py-3">Action</th>
-                <th className="px-4 py-3">Key</th>
-              </tr>
-            </thead>
-            <tbody className="text-sm font-normal text-gray-700 text-center">
-              <tr className="py-10 bg-gray-100 hover:bg-gray-200 font-medium">
-                <td className="px-4 py-4">Accelerate</td>
-                <td className="px-4 py-4">
-                  <kbd className="inline-flex items-center mr-1 px-2 py-1.5 text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">
-                    <svg
-                      className="w-2.5 h-2.5"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 16 10"
-                    >
-                      <path d="M9.207 1A2 2 0 0 0 6.38 1L.793 6.586A2 2 0 0 0 2.207 10H13.38a2 2 0 0 0 1.414-3.414L9.207 1Z" />
-                    </svg>
-                    <span className="sr-only">Arrow key up</span>
-                  </kbd>
-                </td>
-              </tr>
-              <tr className="py-10 bg-gray-100 hover:bg-gray-200 font-medium">
-                <td className="px-4 py-4">Reverse</td>
-                <td className="px-4 py-4">
-                  <kbd className="inline-flex items-center px-2 py-1.5 text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">
-                    <svg
-                      className="w-2.5 h-2.5"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 16 10"
-                    >
-                      <path d="M15.434 1.235A2 2 0 0 0 13.586 0H2.414A2 2 0 0 0 1 3.414L6.586 9a2 2 0 0 0 2.828 0L15 3.414a2 2 0 0 0 .434-2.179Z" />
-                    </svg>
-                    <span className="sr-only">Arrow key down</span>
-                  </kbd>
-                </td>
-              </tr>
-              <tr className="py-10 bg-gray-100 hover:bg-gray-200 font-medium">
-                <td className="px-4 py-4">Steer Left</td>
-                <td className="px-4 py-4">
-                  <kbd className="inline-flex items-center mr-1 px-2 py-1.5 text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">
-                    <svg
-                      className="w-2.5 h-2.5"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 10 16"
-                    >
-                      <path d="M8.766.566A2 2 0 0 0 6.586 1L1 6.586a2 2 0 0 0 0 2.828L6.586 15A2 2 0 0 0 10 13.586V2.414A2 2 0 0 0 8.766.566Z" />
-                    </svg>
-                    <span className="sr-only">Arrow key left</span>
-                  </kbd>
-                </td>
-              </tr>
-              <tr className="py-10 bg-gray-100 hover:bg-gray-200 font-medium">
-                <td className="px-4 py-4">Steer Right</td>
-                <td className="px-4 py-4">
-                  <kbd className="inline-flex items-center px-2 py-1.5 text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">
-                    <svg
-                      className="w-2.5 h-2.5"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 10 16"
-                    >
-                      <path d="M3.414 1A2 2 0 0 0 0 2.414v11.172A2 2 0 0 0 3.414 15L9 9.414a2 2 0 0 0 0-2.828L3.414 1Z" />
-                    </svg>
-                    <span className="sr-only">Arrow key right</span>
-                  </kbd>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div className="lg:mt-6 lg:mb-6 overflow-x-auto">
+          <div className="hidden lg:block">
+            <p>Use below keyboard keys to play!</p>
+            <table className="w-full table-auto">
+              <thead className="">
+                <tr className="text-sm font-semibold text-center border-b-2 border-blue-500 uppercase">
+                  <th className="px-4 py-3">Action</th>
+                  <th className="px-4 py-3">Key</th>
+                </tr>
+              </thead>
+              <tbody className="text-sm font-normal text-gray-700 text-center">
+                <tr className="py-10 bg-gray-100 hover:bg-gray-200 font-medium">
+                  <td className="px-4 py-4">Accelerate</td>
+                  <td className="px-4 py-4">
+                    <kbd className="inline-flex items-center mr-1 px-2 py-1.5 text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">
+                      <svg
+                        className="w-2.5 h-2.5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 16 10"
+                      >
+                        <path d="M9.207 1A2 2 0 0 0 6.38 1L.793 6.586A2 2 0 0 0 2.207 10H13.38a2 2 0 0 0 1.414-3.414L9.207 1Z" />
+                      </svg>
+                      <span className="sr-only">Arrow key up</span>
+                    </kbd>
+                  </td>
+                </tr>
+                <tr className="py-10 bg-gray-100 hover:bg-gray-200 font-medium">
+                  <td className="px-4 py-4">Reverse</td>
+                  <td className="px-4 py-4">
+                    <kbd className="inline-flex items-center px-2 py-1.5 text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">
+                      <svg
+                        className="w-2.5 h-2.5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 16 10"
+                      >
+                        <path d="M15.434 1.235A2 2 0 0 0 13.586 0H2.414A2 2 0 0 0 1 3.414L6.586 9a2 2 0 0 0 2.828 0L15 3.414a2 2 0 0 0 .434-2.179Z" />
+                      </svg>
+                      <span className="sr-only">Arrow key down</span>
+                    </kbd>
+                  </td>
+                </tr>
+                <tr className="py-10 bg-gray-100 hover:bg-gray-200 font-medium">
+                  <td className="px-4 py-4">Steer Left</td>
+                  <td className="px-4 py-4">
+                    <kbd className="inline-flex items-center mr-1 px-2 py-1.5 text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">
+                      <svg
+                        className="w-2.5 h-2.5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 10 16"
+                      >
+                        <path d="M8.766.566A2 2 0 0 0 6.586 1L1 6.586a2 2 0 0 0 0 2.828L6.586 15A2 2 0 0 0 10 13.586V2.414A2 2 0 0 0 8.766.566Z" />
+                      </svg>
+                      <span className="sr-only">Arrow key left</span>
+                    </kbd>
+                  </td>
+                </tr>
+                <tr className="py-10 bg-gray-100 hover:bg-gray-200 font-medium">
+                  <td className="px-4 py-4">Steer Right</td>
+                  <td className="px-4 py-4">
+                    <kbd className="inline-flex items-center px-2 py-1.5 text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">
+                      <svg
+                        className="w-2.5 h-2.5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 10 16"
+                      >
+                        <path d="M3.414 1A2 2 0 0 0 0 2.414v11.172A2 2 0 0 0 3.414 15L9 9.414a2 2 0 0 0 0-2.828L3.414 1Z" />
+                      </svg>
+                      <span className="sr-only">Arrow key right</span>
+                    </kbd>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <canvas ref={canvasRef} />
+        <footer className="flex items-center justify-between lg:hidden">
+          <button
+            type="button"
+            onMouseDown={() => onKeyDown('ArrowUp')}
+            onMouseUp={() => onKeyUp('ArrowUp')}
+            className="px-12 pt-4 pb-3.5 text-white bg-gray-800"
+          >
+            <svg
+              className="w-2.5 h-2.5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 16 10"
+            >
+              <path d="M9.207 1A2 2 0 0 0 6.38 1L.793 6.586A2 2 0 0 0 2.207 10H13.38a2 2 0 0 0 1.414-3.414L9.207 1Z" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onMouseDown={() => onKeyDown('ArrowDown')}
+            onMouseUp={() => onKeyUp('ArrowDown')}
+            className="px-12 pt-4 pb-3.5 text-white bg-gray-800"
+          >
+            <svg
+              className="w-2.5 h-2.5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 16 10"
+            >
+              <path d="M15.434 1.235A2 2 0 0 0 13.586 0H2.414A2 2 0 0 0 1 3.414L6.586 9a2 2 0 0 0 2.828 0L15 3.414a2 2 0 0 0 .434-2.179Z" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            className="px-12 pt-4 pb-3.5 bg-neutral-50 text-sm font-medium uppercase leading-normal text-neutral-800"
+            onClick={() => {
+              window.clearInterval(timerLoop);
+              resetGameOnClick();
+            }}
+          >
+            Reset Game
+          </button>
+          <button
+            type="button"
+            className="px-12 pt-4 pb-3.5 bg-blue-700 text-sm font-medium uppercase leading-normal text-neutral-100"
+            onClick={() => optionsOnClick()}
+          >
+            Options
+          </button>
+          <button
+            type="button"
+            onMouseDown={() => onKeyDown('ArrowLeft')}
+            onMouseUp={() => onKeyUp('ArrowLeft')}
+            className="px-12 pt-4 pb-3.5 text-white bg-gray-800"
+          >
+            <svg
+              className="w-2.5 h-2.5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 10 16"
+            >
+              <path d="M8.766.566A2 2 0 0 0 6.586 1L1 6.586a2 2 0 0 0 0 2.828L6.586 15A2 2 0 0 0 10 13.586V2.414A2 2 0 0 0 8.766.566Z" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onMouseDown={() => onKeyDown('ArrowRight')}
+            onMouseUp={() => onKeyUp('ArrowRight')}
+            className="px-12 pt-4 pb-3.5 text-white bg-gray-800"
+          >
+            <svg
+              className="w-2.5 h-2.5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 10 16"
+            >
+              <path d="M3.414 1A2 2 0 0 0 0 2.414v11.172A2 2 0 0 0 3.414 15L9 9.414a2 2 0 0 0 0-2.828L3.414 1Z" />
+            </svg>
+          </button>
+        </footer>
       </div>
     </section>
   );

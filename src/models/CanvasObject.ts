@@ -15,6 +15,7 @@ export class CanvasObject {
   static createFromAssetURL(assetURL: string, size?: number): Promise<CanvasObject> {
     return new Promise((resolve, reject) => {
       const asset = new Image();
+
       asset.onload = () => resolve(new CanvasObject({ asset, size }));
       asset.onerror = reject;
       asset.src = assetURL;

@@ -6,6 +6,7 @@ export const GAME_RESET = 'GAME_RESET';
 export const GAME_STARTED = 'GAME_STARTED';
 
 export const OPTIONS_OPENED = 'OPTIONS_OPENED';
+export const OPTIONS_SAVED = 'OPTIONS_SAVED';
 export const OPTIONS_CLOSED = 'OPTIONS_CLOSED';
 
 export const CANVAS_LOADED = 'CANVAS_LOADED';
@@ -25,6 +26,10 @@ export const gameStarted = () => ({
 
 export const optionsOpened = () => ({
   type: OPTIONS_OPENED,
+});
+
+export const optionsSaved = () => ({
+  type: OPTIONS_SAVED,
 });
 
 export const optionsClosed = () => ({

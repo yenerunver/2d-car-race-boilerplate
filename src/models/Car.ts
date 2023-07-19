@@ -53,20 +53,20 @@ export class Car {
     }, FPS);
   }
 
-  steerLeft() {
+  steerLeft(screenMultiplier: number) {
     if (!this.isMoving()) {
       return;
     }
 
-    this.position.angle -= this.angleStep * (this.speed / this.maxSpeed);
+    this.position.angle -= (this.angleStep / screenMultiplier) * (this.speed / this.maxSpeed);
   }
 
-  steerRight() {
+  steerRight(screenMultiplier: number) {
     if (!this.isMoving()) {
       return;
     }
 
-    this.position.angle += this.angleStep * (this.speed / this.maxSpeed);
+    this.position.angle += (this.angleStep / screenMultiplier) * (this.speed / this.maxSpeed);
   }
 
   draw(canvas: Canvas, callback: Function) {

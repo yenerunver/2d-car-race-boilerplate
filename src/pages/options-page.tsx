@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { optionsClosed } from '../actions';
+import { optionsClosed, optionsSaved } from '../actions';
 import { OptionsPage as OptionsPageType } from '../@types/OptionsPage';
 
-function OptionsPageDummy({ onOptionsClose }: OptionsPageType) {
+function OptionsPageDummy({ onOptionsClose, onOptionsSave }: OptionsPageType) {
+  const [option1, setOption1] = useState(false);
+  const [option2, setOption2] = useState(true);
+  const [option3, setOption3] = useState(false);
+
   return (
     <>
       <div className="bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40" />
@@ -46,9 +50,14 @@ function OptionsPageDummy({ onOptionsClose }: OptionsPageType) {
                     name="option1"
                     value=""
                     className="sr-only peer"
-                    checked={false}
+                    checked={option1}
+                    readOnly
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
+                  {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
+                  <div
+                    className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+                    onClick={() => setOption1(!option1)}
+                  />
                   <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                     Option 1
                   </span>
@@ -64,9 +73,14 @@ function OptionsPageDummy({ onOptionsClose }: OptionsPageType) {
                     name="option2"
                     value=""
                     className="sr-only peer"
-                    checked={false}
+                    checked={option2}
+                    readOnly
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
+                  {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
+                  <div
+                    className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+                    onClick={() => setOption2(!option2)}
+                  />
                   <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                     Option 2
                   </span>
@@ -82,9 +96,14 @@ function OptionsPageDummy({ onOptionsClose }: OptionsPageType) {
                     name="option3"
                     value=""
                     className="sr-only peer"
-                    checked={false}
+                    checked={option3}
+                    readOnly
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
+                  {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
+                  <div
+                    className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+                    onClick={() => setOption3(!option3)}
+                  />
                   <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                     Option 3
                   </span>
@@ -95,12 +114,14 @@ function OptionsPageDummy({ onOptionsClose }: OptionsPageType) {
               <button
                 type="button"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                onClick={() => onOptionsSave()}
               >
                 Save
               </button>
               <button
                 type="button"
                 className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                onClick={() => onOptionsClose()}
               >
                 Discard
               </button>
@@ -114,6 +135,7 @@ function OptionsPageDummy({ onOptionsClose }: OptionsPageType) {
 
 const mapDispatchToProps = {
   onOptionsClose: optionsClosed,
+  onOptionsSave: optionsSaved,
 };
 
 const OptionsPage = connect(null, mapDispatchToProps)(OptionsPageDummy);
